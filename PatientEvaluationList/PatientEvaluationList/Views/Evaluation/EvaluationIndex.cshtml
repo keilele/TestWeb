@@ -1,0 +1,340 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>初审病人评估表</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/jquery.datetimepicker.css" rel="stylesheet" />
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.datetimepicker.js"></script>
+    <style type="text/css">
+        .container {
+            outline: none;
+        }
+
+        .row {
+            margin-top: 8px;
+        }
+
+            .row label {
+                margin-right: 10px;
+            }
+
+                .row label input {
+                    display: block;
+                    float: left;
+                    vertical-align: middle;
+                    margin-bottom: 5px;
+                }
+
+                    .row label input[type="text"] {
+                        width: 40%;
+                    }
+
+                .row label span {
+                    font-size: 10px;
+                }
+
+            .row input {
+                outline: none;
+                border: none;
+                border-radius: 3px;
+                text-align: center;
+            }
+
+        input[type="text"] {
+            border-color: #606060;
+            border-style: solid;
+            border-top-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 1px;
+            border-left-width: 0px;
+            border-radius: 0;
+        }
+
+        .row select {
+            margin-left: -15px;
+            margin-bottom: 10px;
+            height: 22px;
+            line-height: 22px;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #000;
+        }
+
+        .autocomplete-suggestions {
+            background-color: white;
+            border: solid 1px #ccc;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background-color: #4cff00
+        }
+
+        .loadingModal {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
+            z-index: 999;
+            opacity: 1 !important;
+        }
+
+            .loadingModal img {
+                display: block;
+                width: 180px;
+                height: 180px;
+                margin: 200px auto;
+            }
+    </style>
+
+
+</head>
+<body>
+    <div class="container">
+
+        <div class="modal-title">
+            <h1 class="modal-title" style="text-align:center; font-weight:900">初审病人评估表</h1>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>姓名：</span>
+                    <input type="text" placeholder="此处输入姓名" id="name">
+                </div>
+                <div class="col-md-4" id="sex">
+                    <span>性别：</span>
+                    <label>
+                        <input type="radio" name="sex" checked value="1">男
+                    </label>
+                    <label>
+                        <input type="radio" name="sex">女
+                    </label>
+                </div>
+                <div class="col-md-4" id="ageunit">
+                    <span>出生日期*：</span>
+                    <input class="ywval-req ywval-shortbirthday" type="text" id="birthday" placeholder="年 月 日">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>职业：</span>
+                </div>
+                <div class="col-md-10" id="patientbelong">
+                    <div class="row" id="patientjob">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <span>身份证号：</span>
+                    <input class="ywval-req ywval-idnumber" type="text" placeholder="此处输入身份证号码" style="display:inline-block;width:70%" id="icno">
+                </div>
+                <div class="col-md-6">
+                    <span>国籍：</span>
+                    <input class="ywval-req ywval-idnumber" type="text" placeholder="此处输入身份证号码" style="display:inline-block;width:70%" id="icguoji">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <span>户籍地址：</span>
+                    <input class="ywval-req" type="text" placeholder="此处输入工作单位" style="display:inline-block;width:70%" id="workunit">
+                </div>
+                <div class="col-md-6">
+                    <span>现居地址：</span>
+                    <input class="ywval-tel" type="text" placeholder="此处输入联系电话" style="display:inline-block;width:70%" id="contactnumber">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <span>电子邮箱：</span>
+                    <input class="ywval-req" type="text" placeholder="此处输入工作单位" style="display:inline-block;width:70%" id="workunit">
+                </div>
+                <div class="col-md-6">
+                    <span>联系电话：</span>
+                    固定电话<input class="ywval-tel" type="text" placeholder="此处输入联系电话" id="contactnumber">
+                    手机<input class="ywval-tel" type="text" placeholder="此处输入联系电话" id="contactnumber">
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>婚姻状况：</span>
+                </div>
+                <div class="col-md-10" id="patientbelong">
+                    <div class="row" id="householdbelong">
+                        <div class="col-md-2">
+                            <label><input type="radio" name="householdbelong" value="1">未婚</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label><input type="radio" name="householdbelong" value="2">已婚</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label><input type="radio" name="householdbelong" value="3">不便回答</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <span>联系人：</span>
+                    姓名:
+                    <input class="ywval-req" type="text" placeholder="此处输入工作单位" style="display:inline-block;width:70%" id="workunit">
+                </div>
+                <div class="col-md-4">
+                    <span>电话：</span>
+                  <input class="ywval-tel" type="text" placeholder="此处输入联系电话">
+                </div>
+                <div class="col-md-4">
+                    <span>与本人关系：</span>
+                    <input class="ywval-tel" type="text" placeholder="此处输入联系电话" id="contactnumber">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>宗教信仰：</span>
+                </div>
+                <div class="col-md-10">
+                    <div class="row" id="xybstr">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>语言：</span>
+                </div>
+                <div class="col-md-10">
+                    <div class="row" id="yuyan">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>教育程度：</span>
+                </div>
+                <div class="col-md-10">
+                    <div class="row" id="jycd">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2" style="height:33px;line-height:33px">
+                    <span>医疗保险：</span>
+                </div>
+                <div class="col-md-10">
+                    <div class="row" id="yiliaobx">
+                    </div>
+                </div>
+            </div>            
+
+            <div class="row">
+                <div class="col-md-6">
+                    <span>血型：</span>
+                    <input class="ywval-req ywval-idnumber" type="text">
+                </div>
+                <div class="col-md-6">
+                    <input  type="checkbox">不清楚/不便回答
+                </div>
+            </div>
+
+
+            <div class="row" style="height:0px;border:3px dashed #000;margin-top:30px;margin-bottom:30px"></div>
+
+
+        </div>
+    </div>
+
+</body>
+
+
+</html>
+<script>
+
+
+    $(document).ready(function () {
+        GetEnum();
+
+        $('#birthday,#morbiditydate,#diagnosedate,#deaddate,#fillcarddate,#confirmdetetiondate,#aidsconfirmdate').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            lang: 'ch',
+            yearStar: 1900,
+            validateOnBlur: false
+        });
+    });
+    //获取要绑定的checkbox
+    function GetEnum() {
+
+        $.ajax({
+            type: "GET",
+            url: "getparameters",
+            data: {},
+            success: function (dataBack) {
+                if (dataBack.result == 1) {
+                    var jobstr = '';
+                    var xybstr = '';
+                    var yybstr = '';
+                    var jybstr = '';
+                    var ybstr = '';
+                    $(dataBack.data).each(function (index, item) {
+                        if (item.类型名称 == '职业') {
+                            jobstr += '<div class="col-md-3">';
+                            jobstr += '<label><input type="checkbox" name="patientjob" value="' + item.编号 + '">' + item.名称 + ' </label>';
+                            jobstr += '</div>';
+                        }
+                        if (item.类型名称 == '信仰') {
+                            xybstr += '<div class="col-md-3">';
+                            xybstr += '<label><input type="checkbox" name="xybstr" value="' + item.编号 + '">' + item.名称 + ' </label>';
+                            xybstr += '</div>';
+                        }
+                        if (item.类型名称 == '语言') {
+                            yybstr += '<div class="col-md-3">';
+                            yybstr += '<label><input type="checkbox" name="yuyan" value="' + item.编号 + '">' + item.名称 + ' </label>';
+                            yybstr += '</div>';
+                        }
+                        if (item.类型名称 == '教育程度') {
+                            jybstr += '<div class="col-md-3">';
+                            jybstr += '<label><input type="checkbox" name="jycd" value="' + item.编号 + '">' + item.名称 + ' </label>';
+                            jybstr += '</div>';
+                        }
+                        if (item.类型名称 == '医疗保险') {
+                            ybstr += '<div class="col-md-3">';
+                            ybstr += '<label><input type="checkbox" name="yiliaobx" value="' + item.编号 + '">' + item.名称 + ' </label>';
+                            ybstr += '</div>';
+                        }
+                    })
+                    $('#patientjob').html(jobstr);
+                    $('#xybstr').html(xybstr);
+                    $('#yuyan').html(yybstr);
+                    $('#jycd').html(jybstr);
+                    $('#yiliaobx').html(ybstr);
+                }
+            }, error: function (error) {
+                alert(error.status + error.statusText);
+            }
+
+        })
+    }
+</script>
